@@ -179,6 +179,12 @@ class TestFilter:
         t = env.from_string('{{ "jinja"|indent(blank=true) }}')
         assert t.render() == "jinja"
 
+    def test_indent_empty_input_with_first(self, env):
+        """An empty block has no first line to indent (#2176)."""
+        t = env.from_string("{% filter indent(4, first=True) %}{% endfilter %}")
+        assert t.render() == ""
+        assert env.from_string('{{ ""|indent(4, first=True) }}').render() == ""
+
     def test_indent_markup_input(self, env):
         """
         Tests cases where the filter input is a Markup type
